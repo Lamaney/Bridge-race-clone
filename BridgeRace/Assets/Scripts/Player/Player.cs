@@ -5,22 +5,19 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
    Animator animator;
+    AnimController controller;
     PlayerMovement playerMovement;
     Rigidbody rb;
 
     private void Awake()
     {
-       animator = GetComponent<Animator>();
+       AnimController controller = GetComponent<AnimController>();
         playerMovement = GetComponent<PlayerMovement>();
         rb = GetComponent<Rigidbody>();
     }
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    
 
     // Update is called once per frame
     void Update()
@@ -28,26 +25,23 @@ public class Player : MonoBehaviour
         SetCharacterState();
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
+   
 
 
+
+    //set character state with velocity 
     void SetCharacterState()
     {
         if (rb.velocity.magnitude == 0)
         {
-            animator.SetBool("IsRunning", false);
-            Debug.Log(rb.velocity.magnitude.ToString());
-
+            
+            playerMovement.SetMovementState(PlayerMovement.MovementStates.Idle);
         }
 
         else if (rb.velocity.magnitude > 0)
         {
             
-            animator.SetBool("IsRunning", true);
-            Debug.Log(rb.velocity.magnitude.ToString());
+            playerMovement.SetMovementState(PlayerMovement.MovementStates.Running);
 
         }
                 

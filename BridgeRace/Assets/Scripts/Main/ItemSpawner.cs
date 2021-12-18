@@ -10,38 +10,54 @@ public class ItemSpawner : MonoBehaviour
 
     [Header("Item lists")]
     public List<GameObject> bricks;
-    List<GameObject> deneme=new List<GameObject>();
+    
 
     public Material[] brickMaterials;
 
-    public Transform disabledItems;
+    public Transform spawnPoint;
+    public Transform parent;
+
+    public GameObject brick;
+    GameObject clone;
 
     System.Random rand=new System.Random();
-
-
-    void Start()
-    {
-        SpawnBricks();
-    }
+    
+  
 
     
-    void Update()
+
+
+
+
+    public  void SpawnBricks(int playerCounter)
     {
-        if (Input.GetKeyDown(KeyCode.H))
+
+
+        for (int i = 0; i < playerCounter; i++)
         {
+
+            clone=Instantiate(brick);
+            clone.transform.parent = parent;
+            Vector3 column = spawnPoint.localPosition;
+            clone.transform.localPosition = column;
             
-            Debug.Log(bricks.Count);
-            Debug.Log(deneme.Count);
+
+            for (int j = 0; j < 5; j++)
+            {
+                clone = Instantiate(brick);
+                clone.transform.parent = parent;
+                spawnPoint.position += new Vector3(4,0);
+                Vector3 row = spawnPoint.localPosition;
+                clone.transform.localPosition = row;
+
+
+            }
+
+            spawnPoint.localPosition += new Vector3(0,0,5);
 
         }
-    }
 
 
-
-
-    void SpawnBricks()
-    {
-        
 
         for (int i = 0; i < bricks.Count; i++)
         {
@@ -53,18 +69,23 @@ public class ItemSpawner : MonoBehaviour
             
             bricks[i].gameObject.tag = materialName; 
         }
+
+
+
+
+
+
+
     }
 
-
-    public void DisableBrick(GameObject brick)
+    public void DisableBrick(GameObject gameObject)
     {
-     
-        brick.GetComponent<MeshRenderer>().enabled = false;
-        brick.GetComponent<Collider>().enabled = false;
-        deneme.Add(brick as GameObject);
-       
-    }
 
+        gameObject.GetComponent<MeshRenderer>().enabled = false;    
+        gameObject.GetComponent<Collider>().enabled = false;
+
+    }
+   
 
     void SpawnOneBrick()
     {

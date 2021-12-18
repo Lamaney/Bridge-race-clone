@@ -48,27 +48,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
+       
+
+    }
+    private void Update()
+    {
+        PlayAnimBasedOnState();
         if (Input.GetMouseButton(0))
         {
             HandleMovement();
         }
-        else
-        {
-            if (animator.GetBool("IsRunning")) 
-            {
-
-                movementStates = MovementStates.Idle;
-
-            }
-
-        }
-
     }
 
-    
 
-    //TODO
-    //rb velocity ile haraket durumun belirleyip animasyon calistir
+
+   
 
 
     /// <summary>
@@ -95,12 +90,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 newMovePoint = new Vector3(hit.point.x, transform.position.y, hit.point.z);
             //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newMovePoint - transform.position),turnSpeed*Time.deltaTime);
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(newMovePoint - transform.position), turnSpeed * Time.deltaTime));
-            if (!animator.GetBool("IsRunning"))
-            {
-
-                movementStates = MovementStates.Running;
-
-            }
+           
 
         }
 
@@ -129,7 +119,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    
+    public void SetMovementState(MovementStates movementState)
+    {
+        movementStates = movementState;
+    }
 
-   
+
 }
