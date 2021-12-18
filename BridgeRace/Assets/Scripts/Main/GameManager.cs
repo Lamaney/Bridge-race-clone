@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ItemSpawner.SpawnBricks(players›nGame);
+        
     }
 
     // Update is called once per frame

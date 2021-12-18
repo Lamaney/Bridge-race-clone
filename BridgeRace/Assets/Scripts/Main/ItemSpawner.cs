@@ -9,8 +9,9 @@ public class ItemSpawner : MonoBehaviour
     //public GameObject[] disabledItems;
 
     [Header("Item lists")]
-    public List<GameObject> bricks;
-    
+    List<GameObject> bricks=new List<GameObject>();
+    List<GameObject> disabledItems=new List<GameObject>();
+
 
     public Material[] brickMaterials;
 
@@ -18,16 +19,27 @@ public class ItemSpawner : MonoBehaviour
     public Transform parent;
 
     public GameObject brick;
-    GameObject clone;
+    GameObject clone,collectibleChild;
 
-    System.Random rand=new System.Random();
-    
-  
-
-    
+   
 
 
 
+    private void Start()
+    {
+        SpawnBricks(3);
+        disabledItems.Add(clone);
+        
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log(disabledItems.Count);
+        }
+    }
 
     public  void SpawnBricks(int playerCounter)
     {
@@ -37,14 +49,16 @@ public class ItemSpawner : MonoBehaviour
         {
 
             clone=Instantiate(brick);
+            bricks.Add(clone);
             clone.transform.parent = parent;
             Vector3 column = spawnPoint.localPosition;
             clone.transform.localPosition = column;
             
 
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 4; j++)
             {
                 clone = Instantiate(brick);
+                bricks.Add(clone);
                 clone.transform.parent = parent;
                 spawnPoint.position += new Vector3(4,0);
                 Vector3 row = spawnPoint.localPosition;
@@ -53,7 +67,7 @@ public class ItemSpawner : MonoBehaviour
 
             }
 
-            spawnPoint.localPosition += new Vector3(0,0,5);
+            spawnPoint.localPosition -= new Vector3(16,0,5);
 
         }
 
@@ -64,7 +78,7 @@ public class ItemSpawner : MonoBehaviour
             MeshRenderer mr=bricks[i].GetComponent<MeshRenderer>();
             mr.enabled = true;
            // bricks[i].GetComponent<MeshRenderer>().material= brickMaterials[rand.Next(0,brickMaterials.Length)];
-            mr.material = brickMaterials[rand.Next(0, brickMaterials.Length)];
+            mr.material = brickMaterials[Random.Range(0, brickMaterials.Length)];
             string materialName=mr.material.name.ToString().Replace(" (Instance)", ""); ;
             
             bricks[i].gameObject.tag = materialName; 
@@ -80,9 +94,10 @@ public class ItemSpawner : MonoBehaviour
 
     public void DisableBrick(GameObject gameObject)
     {
-
+        disabledItems.Add(gameObject);
         gameObject.GetComponent<MeshRenderer>().enabled = false;    
         gameObject.GetComponent<Collider>().enabled = false;
+        
 
     }
    
